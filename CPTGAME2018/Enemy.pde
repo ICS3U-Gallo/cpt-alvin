@@ -26,6 +26,11 @@ class Enemy {
     rect(x, y, w, h);
   }
   
+  void punchleft() {
+    rect(x, y, w, h);
+    image(punchleft, x-30, y-30, w+30, h+70);
+  }
+  
   
   /*void move() {
     if (enemyTopCollide) {

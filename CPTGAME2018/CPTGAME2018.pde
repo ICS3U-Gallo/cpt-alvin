@@ -10,7 +10,8 @@ Fireball[] fireballs;
 Pokemon[] pokemons;
 Portal[] portals;  
 float platformSpeed;
-PImage pokemoncard, magikarpCard, roastedchicken, sword, swordleft, fireball, portal;
+PImage pokemoncard, magikarpCard, roastedchicken, sword, swordleft, fireball, portal,
+       punchleft;
 String screen;
 boolean left, right, up, down, hitEnemy;
 int cardCount, enemySpeed;  
@@ -27,6 +28,7 @@ void setup() {
   roastedchicken = loadImage("roastedchicken.png");
   fireball = loadImage("fireball.png");
   portal = loadImage("portal.png");
+  punchleft = loadImage("punchleft.png");
  // swordleft = loadImage("swordleft.png");
   cardCount = 0;
   hitEnemy = false;
@@ -51,12 +53,12 @@ void setup() {
 //-------------------------------------------------------
   platforms[14] = new Platform(950, 500, 200, 200);
   platforms[15] = new Platform(0, 700, width, 200);
-  platforms[16] = new Platform(0, 100, 100, 30);
+  platforms[16] = new Platform(0, 250, 100, 30);
   platforms[17] = new Platform(50, 350, 100, 30);
   platforms[18] = new Platform(200, 200, 50, 50);
   platforms[19] = new Platform(400, 150, 50, 50);        // lvl 1
-  platforms[20] = new Platform(700, 0, 100, 200);
-  platforms[21] = new Platform(600, 200, 200, 50);
+  platforms[20] = new Platform(1200, 0, 100, 200);
+  platforms[21] = new Platform(600, 200, 700, 50);
   platforms[22] = new Platform(0, 600, 100, 30);
   
   
@@ -67,15 +69,17 @@ void setup() {
     platforms[i].x += platformSpeed;
   }
  
-  enemies = new Enemy[4];  //location of enemies
+  enemies = new Enemy[5];  //location of enemies
   enemies[0] = new Enemy(250, 410, 40, 40);
   enemies[1] = new Enemy(1100, 400, 100, 100);        //lvl 1
+  enemies[2] = new Enemy(1400, 0, 200, 200);
   //------------------------------------------------
-  enemies[2] = new Enemy(575, 300, 50, 50); 
-  enemies[3] = new Enemy(1200, 650, 50, 50);
+  enemies[3] = new Enemy(575, 300, 50, 50); 
+  enemies[4] = new Enemy(1200, 650, 50, 50);
   
-  pokemons = new Pokemon[1];      //location of pokemon cards
+  pokemons = new Pokemon[2];      //location of pokemon cards
   pokemons[0] = new Pokemon(350, 75, 30, 50);
+  pokemons[1] = new Pokemon(1150, 150, 30, 50);
   
   swords = new Sword[7];      //location of swords
   swords[0] = new Sword(307, 700, 20, 120);
@@ -83,9 +87,15 @@ void setup() {
   swords[2] = new Sword(347, 700, 20, 120);
   //--------------------------------------------
   swords[3] = new Sword(250, 220, 100, 10); 
-  swords[4] = new Sword(600, 100, 100, 10); 
-  swords[5] = new Sword(600, 120, 100, 10);       //lvl1
-  swords[6] = new Sword(600, 140, 100, 10); 
+  swords[4] = new Sword(1000, 130, 20, 70); 
+  swords[5] = new Sword(1020, 130, 20, 70);       //lvl1
+  swords[6] = new Sword(1040, 130, 20, 70); 
+  
+  /*for (int i = 7; i < 20; i++) {
+    int x = 0;
+    swords[i] = new Sword(x, 700, 30, 100);
+    x += 50;
+  }*/
   
   portals = new Portal[1];    //location of portal
   portals[0] = new Portal(1320, 690, 10, 10);

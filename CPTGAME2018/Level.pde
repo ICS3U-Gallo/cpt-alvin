@@ -142,6 +142,14 @@ class Level {
       swords[i].display();
     }
     
+    for (int i = 4; i < 7; i++) {
+      if (intersectSword(p, swords[i])) {
+        screen = "gameover";
+      }
+    }
+    
+    pokemons[1].display();
+    
     for (int i = 14; i < platforms.length; i++) {    // show the visual of the level
       platforms[i].display();
     }
@@ -153,6 +161,8 @@ class Level {
     for (int i = 1; i < 2; i++) {
       enemies[i].mediocre();
     }
+    
+    enemies[2].punchleft();
 
     for (int i = 14; i < platforms.length; i++) {    // apply collisions
       if (topCollide(p, platforms[i])) {
@@ -180,12 +190,26 @@ class Level {
       }
     }
     
-    /*if (platforms[17].x <= 650) {
-      platformSpeed = 5;
-      platforms[17].x += platformSpeed;
-    } else if (platforms[17].x >= 50) {
-      platforms[17].x += -platformSpeed;
-    }*/
+    platformSpeed = 1;
+    if (topCollide(p, platforms[17])) {
+      p.x += platformSpeed;
+      if (platforms[17].x <= 650) {
+        platforms[17].x += platformSpeed;
+      } else if (platforms[17].x >= 50) {
+        platforms[17].x += -platformSpeed;      }
+    }
+    
+    enemySpeed = 30;
+    if (p.x > 600 && p.y < 200) {
+      enemies[2].x -= enemySpeed;
+      if (intersectEnemy(p, enemies[2])) {
+        p.x -= 60;
+      } if (enemies[2].x < 600) {
+        enemies[2].y = -1000;
+      }
+      
+    }
+    
     
     /* for(int i = 0; i < 2; i++) {
      if (enemyTopCollide(enemies[i], platforms[i])) {
