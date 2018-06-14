@@ -10,7 +10,7 @@ Fireball[] fireballs;
 Pokemon[] pokemons;
 Portal[] portals;  
 float platformSpeed;
-PImage pokemoncard, magikarpCard, roastedchicken, sword, swordleft, fireball, portal,
+PImage pokemoncard, magikarpCard, stunfiskCard, roastedchicken, sword, swordleft, fireball, portal,
        punchleft;
 String screen;
 boolean left, right, up, down, hitEnemy;
@@ -25,6 +25,7 @@ void setup() {
   sword = loadImage("sword.png");
   pokemoncard = loadImage("pokemoncard.png"); 
   magikarpCard = loadImage("magikarp.jpeg");
+  stunfiskCard = loadImage("stunfisk.jpg");
   roastedchicken = loadImage("roastedchicken.png");
   fireball = loadImage("fireball.png");
   portal = loadImage("portal.png");
@@ -54,7 +55,7 @@ void setup() {
   platforms[14] = new Platform(950, 500, 200, 200);
   platforms[15] = new Platform(0, 700, width, 200);
   platforms[16] = new Platform(0, 250, 100, 30);
-  platforms[17] = new Platform(50, 350, 100, 30);
+  platforms[17] = new Platform(50, 450, 100, 30);
   platforms[18] = new Platform(200, 200, 50, 50);
   platforms[19] = new Platform(400, 150, 50, 50);        // lvl 1
   platforms[20] = new Platform(1200, 0, 100, 200);
@@ -74,7 +75,7 @@ void setup() {
   enemies[1] = new Enemy(1100, 400, 100, 100);        //lvl 1
   enemies[2] = new Enemy(1400, 0, 200, 200);
   //------------------------------------------------
-  enemies[3] = new Enemy(575, 300, 50, 50); 
+  enemies[3] = new Enemy(575, 300, 50, 50);            // tutorial 
   enemies[4] = new Enemy(1200, 650, 50, 50);
   
   pokemons = new Pokemon[2];      //location of pokemon cards
@@ -86,10 +87,10 @@ void setup() {
   swords[1] = new Sword(327, 700, 20, 120);      //tutorial
   swords[2] = new Sword(347, 700, 20, 120);
   //--------------------------------------------
-  swords[3] = new Sword(250, 220, 100, 10); 
-  swords[4] = new Sword(1000, 130, 20, 70); 
-  swords[5] = new Sword(1020, 130, 20, 70);       //lvl1
-  swords[6] = new Sword(1040, 130, 20, 70); 
+  swords[3] = new Sword(-150, 220, 100, 10); 
+  swords[4] = new Sword(1000, -100, 20, 70); 
+  swords[5] = new Sword(1020, -100, 20, 70);       //lvl1
+  swords[6] = new Sword(1040, -100, 20, 70); 
   
   /*for (int i = 7; i < 20; i++) {
     int x = 0;
@@ -115,13 +116,11 @@ void draw() {
     gameover();
   } else if (screen == "card1") {
     card1();
-    if (keyPressed) {
-      if (key == KeyEvent.VK_SPACE) {
-        screen = "tutorial";
-      }
-    }
+  } else if (screen == "card2") {
+    card2();
   }
 }
+
 
 void tutorial() {
   background(127, 0, 0);
@@ -145,6 +144,7 @@ void tutorialPass() {          //screen after you pass tutorial level
 void lvl1() {              //lvl 1 screen
   background(135,206,250);
   p.player();
+  p.playerScore();
   p.boundaries();
   p.move();
   l.lvl1();
@@ -162,8 +162,8 @@ void gameover() {          //gameover screen
   image(roastedchicken, 450, 250, 500, 300);
   
   if (keyPressed) {
-    if (key == KeyEvent.VK_BACK_SPACE) {
-      screen = "menu";
+    if (key == KeyEvent.VK_BACK_SPACE) {  //in gameover screen
+      screen = "menu";                    //press backspace key to go to menu
     }
   }
 }
@@ -187,6 +187,31 @@ void card1() {                //screen when you collect pokemon card1
   fill(0, 0, 255);
   text("Press SPACE to continue", 175, 675);
   image(magikarpCard, 850, 50, 475, 663);
+  if (keyPressed) {
+    if (key == KeyEvent.VK_SPACE) {
+      screen = "tutorial";
+    }
+  }
+}
+
+void card2() {
+  background(0, 255, 0);
+  textSize(60);
+  fill(255, 0, 0);
+  text("CARD EARNED!", 200, 150);
+  text("WOW NICE!!! YOU JUST", 75, 275);
+  text("GOT A SUPER ULTRA", 75, 375);
+  text("RARE LIMITED EDITION", 75, 475);
+  text("ONE OF A KIND MAGIKARP", 50, 575);
+  textSize(40);
+  fill(0, 0, 255);
+  text("Press SPACE to continue", 175, 675);
+  image(stunfiskCard, 850, 50, 475, 663);
+  if (keyPressed) {
+    if (key == KeyEvent.VK_SPACE) {
+      screen = "lvl1";
+    }
+  }
 }
 
 void keyPressed() {
@@ -360,6 +385,7 @@ boolean intersectPokemon(Player p, Pokemon c) {
   }
   return false;
 }
+  
   
 
 void mouseClicked() {

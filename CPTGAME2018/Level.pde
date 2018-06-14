@@ -19,14 +19,13 @@ class Level {
       }
     }
 
-    for (int i = 0; i < 1; i++) {
-      pokemons[i].display();
-      if (intersectPokemon(p, pokemons[i])) {
-        pokemons[i].x = -100;
-        cardCount += 1;
-        screen = "card1";
-      }
+    pokemons[0].display();
+    if (intersectPokemon(p, pokemons[0])) {
+      pokemons[0].x = -100;
+      cardCount += 1;
+      screen = "card1";
     }
+    
     
  /*   for (int i = 0; i < 1; i++) {
       fireballs[i].display();
@@ -93,18 +92,18 @@ class Level {
       enemies[i].mediocre();
     }
 
-    enemies[2].x -= 5;
-    enemies[2].y -= 5;
-    if (enemies[2].y < -50) {
-      enemies[2].y = height+50;
-      enemies[2].x = width-300;
+    enemies[3].x -= 5;
+    enemies[3].y -= 5;
+    if (enemies[3].y < -50) {
+      enemies[3].y = height+50;
+      enemies[3].x = width-300;
     }
     
-    enemies[3].y -= enemySpeed;
-    if (enemies[3].y >= 650) {
+    enemies[4].y -= enemySpeed;
+    if (enemies[4].y >= 650) {
       enemySpeed = 5;
-      enemies[3].y -= enemySpeed;
-    } else if (enemies[3].y <= 500) {
+      enemies[4].y -= enemySpeed;
+    } else if (enemies[4].y <= 500) {
       enemySpeed = -enemySpeed;
     }
     
@@ -148,7 +147,16 @@ class Level {
       }
     }
     
-    pokemons[1].display();
+    pokemons[1].display(); // pokemon card
+    if (intersectPokemon(p, pokemons[1])) {
+      screen = "card2";
+      cardCount += 1;
+      pokemons[1].y = -100;
+    } if (pokemons[1].y == -100) {
+      enemies[2].x -= 30;
+    } if (intersectEnemy(p, enemies[2])) {
+      p.x -= 35;
+    }
     
     for (int i = 14; i < platforms.length; i++) {    // show the visual of the level
       platforms[i].display();
@@ -162,7 +170,7 @@ class Level {
       enemies[i].mediocre();
     }
     
-    enemies[2].punchleft();
+    enemies[2].punchleft();    //fist
 
     for (int i = 14; i < platforms.length; i++) {    // apply collisions
       if (topCollide(p, platforms[i])) {
@@ -190,26 +198,23 @@ class Level {
       }
     }
     
-    platformSpeed = 1;
-    if (topCollide(p, platforms[17])) {
-      p.x += platformSpeed;
-      if (platforms[17].x <= 650) {
-        platforms[17].x += platformSpeed;
-      } else if (platforms[17].x >= 50) {
-        platforms[17].x += -platformSpeed;      }
+    platformSpeed = 4;
+    platforms[17].x += platformSpeed;
+    if (platforms[17].x >= 650) {
+      platformSpeed = -platformSpeed;
+    } 
+    
+    
+    
+    if (p.x > 200 && p.y < 200) {
+      swords[3].x = 250;
     }
     
-    enemySpeed = 30;
-    if (p.x > 600 && p.y < 200) {
-      enemies[2].x -= enemySpeed;
-      if (intersectEnemy(p, enemies[2])) {
-        p.x -= 60;
-      } if (enemies[2].x < 600) {
-        enemies[2].y = -1000;
+    for (int i = 4; i < 7; i++) {
+      if (p.x > 900 && p.y < 200) {
+        swords[i].y = 130;
       }
-      
     }
-    
     
     /* for(int i = 0; i < 2; i++) {
      if (enemyTopCollide(enemies[i], platforms[i])) {
