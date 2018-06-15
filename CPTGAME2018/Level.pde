@@ -141,7 +141,7 @@ class Level {
       swords[i].display();
     }
     
-    for (int i = 4; i < 7; i++) {
+    for (int i = 3; i < 7; i++) {
       if (intersectSword(p, swords[i])) {
         screen = "gameover";
       }
@@ -153,7 +153,7 @@ class Level {
       cardCount += 1;
       pokemons[1].y = -100;
     } if (pokemons[1].y == -100) {
-      enemies[2].x -= 30;
+      enemies[2].x -= 25;
     } if (intersectEnemy(p, enemies[2])) {
       p.x -= 35;
     }
@@ -199,8 +199,8 @@ class Level {
     }
     
     platformSpeed = 4;
-    platforms[17].x += platformSpeed;
-    if (platforms[17].x >= 650) {
+    platforms[18].x += platformSpeed;
+    if (platforms[18].x >= 650) {
       platformSpeed = -platformSpeed;
     } 
     
@@ -212,7 +212,7 @@ class Level {
     
     for (int i = 4; i < 7; i++) {
       if (p.x > 900 && p.y < 200) {
-        swords[i].y = 130;
+        swords[i].y = 150;
       }
     }
     

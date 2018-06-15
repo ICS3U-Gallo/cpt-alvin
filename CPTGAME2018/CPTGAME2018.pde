@@ -54,9 +54,9 @@ void setup() {
 //-------------------------------------------------------
   platforms[14] = new Platform(950, 500, 200, 200);
   platforms[15] = new Platform(0, 700, width, 200);
-  platforms[16] = new Platform(0, 250, 100, 30);
-  platforms[17] = new Platform(50, 450, 100, 30);
-  platforms[18] = new Platform(200, 200, 50, 50);
+  platforms[16] = new Platform(200, 200, 50, 50);
+  platforms[17] = new Platform(0, 200, 100, 30);
+  platforms[18] = new Platform(50, 450, 100, 30);
   platforms[19] = new Platform(400, 150, 50, 50);        // lvl 1
   platforms[20] = new Platform(1200, 0, 100, 200);
   platforms[21] = new Platform(600, 200, 700, 50);
@@ -80,7 +80,7 @@ void setup() {
   
   pokemons = new Pokemon[2];      //location of pokemon cards
   pokemons[0] = new Pokemon(350, 75, 30, 50);
-  pokemons[1] = new Pokemon(1150, 150, 30, 50);
+  pokemons[1] = new Pokemon(1150, 100, 30, 50);
   
   swords = new Sword[7];      //location of swords
   swords[0] = new Sword(307, 700, 20, 120);
@@ -88,9 +88,9 @@ void setup() {
   swords[2] = new Sword(347, 700, 20, 120);
   //--------------------------------------------
   swords[3] = new Sword(-150, 220, 100, 10); 
-  swords[4] = new Sword(1000, -100, 20, 70); 
-  swords[5] = new Sword(1020, -100, 20, 70);       //lvl1
-  swords[6] = new Sword(1040, -100, 20, 70); 
+  swords[4] = new Sword(1000, -100, 20, 50); 
+  swords[5] = new Sword(1020, -100, 20, 50);       //lvl1
+  swords[6] = new Sword(1040, -100, 20, 50); 
   
   /*for (int i = 7; i < 20; i++) {
     int x = 0;
