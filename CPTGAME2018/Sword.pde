@@ -11,7 +11,7 @@ class Sword {
   void display() {
   //  noStroke();
 //    fill(0, 0, 100);
-    rect(x, y, w, h);
+   // rect(x, y, w, h);
     image(sword, x, y, w, h);
   }
  

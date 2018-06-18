@@ -11,7 +11,7 @@ Fireball[] fireballs;
 Pokemon[] pokemons;
 Portal[] portals;  
 float platformSpeed;
-PImage pokemoncard, magikarpCard, stunfiskCard, arceusCard, soitsuCard, roastedchicken, sword, swordleft, fireball, portal,
+PImage chicken, pokemoncard, magikarpCard, stunfiskCard, arceusCard, soitsuCard, roastedchicken, sword, swordleft, fireball, portal,
        punchleft, grass, swordDown;
 String screen;
 boolean left, right, up, down, hitEnemy;
@@ -23,6 +23,7 @@ void setup() {
   screen = "menu";
   p = new Player();
   l = new Level();
+  chicken = loadImage("chicken.png");
   sword = loadImage("sword.png");
   pokemoncard = loadImage("pokemoncard.png"); 
   magikarpCard = loadImage("magikarp.jpeg");
@@ -38,13 +39,14 @@ void setup() {
  // swordleft = loadImage("swordleft.png");
   cardCount = 0;
   lives = 3;
+  enemySpeed = 5;
   swordz = new PVector[15];
   for(int i = 0; i < swordz.length; i++) {
     float x = random(0, width);
     float y = random(0, 400);
     swordz[i] = new PVector(x, y);
   }
-  platforms = new Platform[36];     //location of platforms
+  platforms = new Platform[37];     //location of platforms
   //------------------------------------------------
   platforms[0] = new Platform(200, 630, 100, 70);
   platforms[1] = new Platform(375, 580, 100, 120);
@@ -79,11 +81,13 @@ void setup() {
   platforms[28] = new Platform(0, 600, 300, 20);
   platforms[29] = new Platform(1000, 600, 366, 20);
   platforms[30] = new Platform(550, 420, 40, 40);
-  platforms[31] = new Platform(650, 500, 40, 40);
+  platforms[31] = new Platform(650, 500, 40, 40);      //lvl2
   platforms[32] = new Platform(800, 580, 40, 40);
   platforms[33] = new Platform(200, 250, 200, 40);
   platforms[34] = new Platform(700, 350, 40, 40);
   platforms[35] = new Platform(500, 300, 40, 40);
+  //----------------------------------------------
+  platforms[36] = new Platform(0, 600, width, 50);
   
   platformSpeed = 0;
   if (screen == "lvl1") {    //platform speed in lvl1 is set to 3
@@ -96,7 +100,7 @@ void setup() {
  
   enemies = new Enemy[5];  //location of enemies
   enemies[0] = new Enemy(500, 640, 60, 60);
-  enemies[1] = new Enemy(1100, 400, 100, 100);        //lvl 1
+  enemies[1] = new Enemy(1100, 400, 50, 50);        //lvl 1
   enemies[2] = new Enemy(1400, 0, 200, 200);
   //------------------------------------------------
   enemies[3] = new Enemy(575, 300, 50, 50);            // tutorial 
@@ -104,12 +108,14 @@ void setup() {
   //------------------------------------------------
   
   
-  pokemons = new Pokemon[3];      //location of pokemon cards
+  pokemons = new Pokemon[4];      //location of pokemon cards
   pokemons[0] = new Pokemon(350, 75, 30, 50);      // tutorial
   //----------------------------------------------
   pokemons[1] = new Pokemon(1150, 100, 30, 50);    // lvl1
   //---------------------------------------------- 
   pokemons[2] = new Pokemon(230, 200, 30, 50);     // lvl2
+  //-----------------------------------------------
+  pokemons[3] = new Pokemon(650, 550, 30, 50);  // lvl3
   
   swords = new Sword[7];      //location of swords
   swords[0] = new Sword(307, 700, 20, 120);
@@ -127,11 +133,21 @@ void setup() {
     x += 50;
   }*/
   
-  portals = new Portal[1];    //location of portal
+  portals = new Portal[4];    //location of portal
   portals[0] = new Portal(1320, 690, 10, 10);
+  portals[1] = new Portal(1320, 690, 10, 10);
+  portals[2] = new Portal(1320, 590, 10, 10);
+  portals[3] = new Portal(-100, 590, 10, 10);
   
-  fireballs = new Fireball[1];    //location of fireballs
-  fireballs[0] = new Fireball(700, 500, 50, 70);
+  fireballs = new Fireball[6];    //location of fireballs
+  fireballs[0] = new Fireball(700, 500, 50, 70);    // tutorial
+  //------------------------------------------------
+  fireballs[1] = new Fireball(300, 400, 100, 100);
+  fireballs[2] = new Fireball(450, 550, 100, 100);
+  fireballs[3] = new Fireball(600, 700, 100, 100);
+  fireballs[4] = new Fireball(750, 850, 100, 100);
+  fireballs[5] = new Fireball(900, 1000, 100, 100);
+  
 }
   
 void draw() {
@@ -147,6 +163,8 @@ void draw() {
     lvl1();
   } if (screen == "lvl2") {
     lvl2();
+  } if (screen == "lvl3") {
+    lvl3();
   } else if (screen == "gameover") {
     gameover();
   } else if (screen == "card1") {
@@ -157,6 +175,8 @@ void draw() {
     card3();
   } if (screen == "card4") {
     card4();
+  } if (screen == "victory") {
+    victory();
   }
 }
 
@@ -230,8 +250,19 @@ void tutorial() {
 void tutorialPass() {          //screen after you pass tutorial level
   background(0, 255, 0);
   textSize(50);
-  text("Well Done!", width/2, 200);
-  text("You are ready to go on your adventure.", 100, 300);
+  fill(0, 0, 150);
+  text("Well Done!", 550, 200);
+  text("You are ready to go on your adventure.", 200, 300);
+  text("Go get those pokemon cards!!!", 300, 400);
+  fill(255,20,147);
+  text("Press SPACE to proceed to the next level", 180, 600);
+  if (keyPressed) {
+    if (key == KeyEvent.VK_SPACE) {  //in gameover screen
+      screen = "lvl1";                    //press backspace key to go to menu
+      p.x = 0;
+      p.y = 150;
+    }
+  }
   
 }
 
@@ -243,11 +274,8 @@ void lvl1() {              //lvl 1 screen
   p.boundaries();
   p.move();
   l.lvl1();
-  p.enemyCollide();
   p.noFall();
   p.noLives();
- // enemies[0].move();
-  println(p.topCollide, p.ySpeed, p.leftCollide);
 }
 
 void lvl2() {
@@ -258,12 +286,17 @@ void lvl2() {
   p.boundaries();
   p.move();
   l.lvl2();
-  p.enemyCollide();
   p.noLives();
 }
 
 void lvl3() {
-  
+  l.lvl3();
+  p.player();
+  p.boundaries();
+  p.playerScore();
+  p.lives();
+  p.noLives();
+  p.move();
 }
 
 void gameover() {          //gameover screen
@@ -272,12 +305,26 @@ void gameover() {          //gameover screen
   textSize(100);
   text("GAME OVER!", 350, 200);
   image(roastedchicken, 450, 250, 500, 300);
-  
+  textSize(40);
+  fill(199,21,133);
+  text("Click BACKSPACE to return to the menu", 300, 650);
+    
   if (keyPressed) {
     if (key == KeyEvent.VK_BACK_SPACE) {  //in gameover screen
       setup();             //press backspace to restart the game
     }
   }
+}
+
+void victory() {
+  background(135,206,250);
+  textSize(150);
+  fill(255, 0, 0, 127);
+  text("YOU WIN!", 330, 300); 
+  textSize(60);
+  text("You collected all the pokemon cards!!!", 150, 400);
+  fill(32,178,170);
+  text("You get nothing.", 450, 600);
 }
 
 /*void tree() {      //drawing of tree
@@ -363,7 +410,7 @@ void card4() {
   image(soitsuCard, 850, 50, 475, 663);
   if (keyPressed) {
     if (key == KeyEvent.VK_SPACE) {
-      //screen = "lvl3";
+      screen = "lvl3";
     }
   }
 }
@@ -548,9 +595,11 @@ void mouseClicked() {
 } 
 
 void mouseReleased() {
-  if(mouseX > 460 && mouseX < 860 && mouseY > 250 && mouseY < 350) {
-    screen = "tutorial";
-  } if (mouseX > 460 && mouseX < 860 && mouseY > 400 && mouseY < 500) {
-    screen = "instructions";    
+  if (screen == "menu") {
+    if(mouseX > 460 && mouseX < 860 && mouseY > 250 && mouseY < 350) {
+      screen = "tutorial";
+    } if (mouseX > 460 && mouseX < 860 && mouseY > 400 && mouseY < 500) {
+      screen = "instructions";    
+    }
   }
 }

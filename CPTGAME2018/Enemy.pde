@@ -1,17 +1,11 @@
 class Enemy {
-  float x, y, w, h /*, g*/;
-  float ySpeed;
-  //boolean enemyTopCollide;
+  float x, y, w, h;
  
   Enemy(float startX, float startY, float startW, float startH) {
     x = startX;
     y = startY;
     w = startW;
     h = startH;
-   // g = 0.3;
-    
-    ySpeed = 0;
-   // enemyTopCollide = false;
   }
 
  void weak() {
@@ -27,7 +21,7 @@ class Enemy {
   }
   
   void punchleft() {
-    rect(x, y, w, h);
+   // rect(x, y, w, h);
     image(punchleft, x-30, y-30, w+30, h+70);
   }
   

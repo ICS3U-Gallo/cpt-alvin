@@ -6,8 +6,8 @@ class Player {
   Player() {
     x = 0;
     y = 600;
-    w = 25;
-    h = 25;
+    w = 35;
+    h = 35;
     g = 0.1;      //gravity
     
     xSpeed = 0;
@@ -22,7 +22,8 @@ class Player {
   void player() {
     noStroke();
     fill(255, 0, 0);
-    rect(x, y, w, h);
+  //  rect(x, y, w, h);
+    image(chicken, x-5, y, w+10, h);
   }
   
   void playerScore() {
@@ -74,13 +75,16 @@ class Player {
       g = 0.3;
     }
   }
- 
   
-  void shoot() {
-    if (key == RIGHT) {
-     // shootRight();
-    } else if (key == LEFT) {
-    //  shootLeft();
+  void fly() {
+     if (left) {        //move left
+      xSpeed = -5;
+    } if (right) {     //move right
+      xSpeed = 5;
+    } if (up) {
+      ySpeed -= 5;
+    } if (down) {
+      ySpeed += 5;
     }
   }
   

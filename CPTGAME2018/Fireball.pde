@@ -11,7 +11,7 @@ class Fireball {
   void display() {
   //  noStroke();
 //    fill(0, 0, 100);
-    rect(x, y, w, h);
+  //  rect(x, y, w, h);
     image(fireball, x, y, w, h);
   }
 }
