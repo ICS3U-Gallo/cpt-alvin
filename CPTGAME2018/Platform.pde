@@ -13,6 +13,7 @@ class Platform {
     fill(0, 0, 100);
     rect(x, y, w, h);
     ellipse(x, y, 5, 5);
+    image(grass, x-5, y, w+10, h);
   }
   
   

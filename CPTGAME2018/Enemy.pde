@@ -1,4 +1,4 @@
- class Enemy {
+class Enemy {
   float x, y, w, h /*, g*/;
   float ySpeed;
   //boolean enemyTopCollide;

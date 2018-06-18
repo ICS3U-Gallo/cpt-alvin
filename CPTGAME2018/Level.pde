@@ -1,21 +1,26 @@
 class Level { 
 
   void tutorial() {
-    tree();
+  //  tree();
     for (int i = 0; i < 3; i++) {
       swords[i].display();
     }
     
     for (int i = 0; i < 3; i++) {
       if (intersectSword(p, swords[i])) {
-        //screen = "gameover";
-      }
+        lives -= 1;
+        p.x = 0;
+        p.y = 600;
+      } 
     }
     
     for (int i = 0; i < 1; i++) {
       portals[i].display();
-      if (intersectPortal(p, portals[i])) {
+      if (intersectPortal(p, portals[i]) && pokemons[0].x == -100) {
         screen = "tutorialPass";
+      } else if (intersectPortal(p, portals[i]) && pokemons[0].x != 100) {
+        p.x = 0;
+        p.y = 600;
       }
     }
 
@@ -88,8 +93,13 @@ class Level {
       }
     }
     
-    for (int i = 2; i < 4; i++) {
+    for (int i = 3; i < 4; i++) {
       enemies[i].mediocre();
+      if (intersectEnemy(p, enemies[i])) {
+        lives -= 1;
+          p.x = 0;
+          p.y = 600;
+      } 
     }
 
     enemies[3].x -= 5;
@@ -119,6 +129,10 @@ class Level {
       fireballs[0].y -= 10;
       if (fireballs[0].y <= -50) {
         fireballs[0].y = height+50;
+      } if (intersectFireball(p, fireballs[i])) {
+        lives -= 1;
+        p.x = 0;
+        p.y = 600;
       }
     }
     
@@ -137,13 +151,12 @@ class Level {
   }
 
   void lvl1() {
-    for (int i = 3; i < swords.length; i++) {
-      swords[i].display();
-    }
-    
     for (int i = 3; i < 7; i++) {
+      swords[i].display();
       if (intersectSword(p, swords[i])) {
-        screen = "gameover";
+        lives -= 1;
+        p.x = 0;
+        p.y = 600;
       }
     }
     
@@ -154,9 +167,14 @@ class Level {
       pokemons[1].y = -100;
     } if (pokemons[1].y == -100) {
       enemies[2].x -= 25;
-    } if (intersectEnemy(p, enemies[2])) {
+    } if (intersectEnemy(p, enemies[2])) {    //when fist hits player, move swords away
       p.x -= 35;
+      p.y -= 7;
+      swords[4].x = -100;
+      swords[5].x = -100;
+      swords[6].x = -100;
     }
+
     
     for (int i = 14; i < platforms.length; i++) {    // show the visual of the level
       platforms[i].display();
@@ -197,12 +215,13 @@ class Level {
         p.rightCollide = false;
       }
     }
-    
-    platformSpeed = 4;
-    platforms[18].x += platformSpeed;
-    if (platforms[18].x >= 650) {
+
+    platforms[19].x += platformSpeed;
+    if (platforms[19].x >= 750) {
       platformSpeed = -platformSpeed;
-    } 
+    } else if (platforms[19].x <= 150) {
+      platformSpeed = -platformSpeed;
+    }
     
     
     
@@ -214,6 +233,16 @@ class Level {
       if (p.x > 900 && p.y < 200) {
         swords[i].y = 150;
       }
+    }
+    
+    if (topCollide(p, platforms[23]) || topCollide(p, platforms[25])) {
+      p.ySpeed -= 10;
+    }
+    
+    if (intersectEnemy(p, enemies[0]) || intersectEnemy(p, enemies[1])) {
+      lives -= 1;
+      p.x = 0;
+      p.y = 50;
     }
     
     /* for(int i = 0; i < 2; i++) {
@@ -230,5 +259,70 @@ class Level {
      enemies[0].x -= 5;
      }
      */
+  }
+  
+  void lvl2() {
+     for (int i = 26; i < platforms.length; i++) {    // show the visual of the level
+      platforms[i].display();
+     }
+     
+     for (int i = 26; i < platforms.length; i++) {    // apply collisions
+      if (topCollide(p, platforms[i])) {
+        p.touchPlatformTop(platforms[i].y);
+        break;
+      } 
+      if (botCollide(p, platforms[i])) {
+        p.touchPlatformBot();
+        break;
+      } 
+      if (leftCollide(p, platforms[i])) {
+        p.touchPlatformLeft();
+        break;
+      } 
+      if (rightCollide(p, platforms[i])) {
+        p.touchPlatformRight();
+        break;
+        //} if (p.y >= platforms[0].y) {
+        //p.y = platforms[0].y-p.h;
+      } else {
+        p.topCollide = false;
+        p.botCollide = false;
+        p.leftCollide = false;
+        p.rightCollide = false;
+      }
+    }
+    
+    pokemons[2].display(); // pokemon card
+    if (intersectPokemon(p, pokemons[2])) {
+      screen = "card3";
+      cardCount += 1;                
+      pokemons[2].y = -100;
+    }
+     
+     for(int i = 0; i < swordz.length; i++) {
+      float ySpeed = random(0, 7);
+      // move each sword
+      swordz[i].add(0, ySpeed); //each sword has a different speed from 0 to 7 flying downward
+  
+      // reset if they go too far
+      if (swordz[i].y > height) {
+        swordz[i].x = (int) random(0, width); //swords reappear anywhere between the whole screen
+        swordz[i].y = -100;                      //if it is moved pass the bottom of the screen
+      }
+      
+      //draw swordz
+      fill(0, 0, 255);
+      rect(swordz[i].x, swordz[i].y, 20, 100);
+      image(swordDown, swordz[i].x, swordz[i].y, 20, 100);
+      
+     /* if (p.x >= swordz[i].x-p.w && p.x <= swordz[i].x+20) {
+        if (p.y >= swordz[i].y-p.h && p.y <= swordz[i].y+100) {    //swordz collision
+          lives -= 1;      //lose life
+          p.x = 0;
+          p.y = 530;      // respawn
+        }
+      }*/
+      
+    }
   }
 }

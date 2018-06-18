@@ -30,6 +30,16 @@ class Player {
     text("Pokemon Cards: " + cardCount + "/4", 20, 20);
   }
   
+  void lives() {
+    textSize(20);
+    text("Lives: " + lives, 300, 20);
+  }
+  
+  void noLives() {
+    if (lives == 0) {
+      screen = "gameover";
+    }
+  }
 /*  void shoot() {
     if (key == KeyEvent.VK_RIGHT) {
       egg.shootRight();
@@ -64,6 +74,7 @@ class Player {
       g = 0.3;
     }
   }
+ 
   
   void shoot() {
     if (key == RIGHT) {
@@ -80,16 +91,22 @@ class Player {
       x = 0;
     } if (y <= 0) {
       y = 0;
-    } if (y >= height-50) {
-      y = height-50;
-    }
+    } 
   }
   
   void noFall() {
-    if (p.y >= 705) {
-      p.y = 700-p.h-5;      //sometimes player falls through ground 
-      right = false;        //put them back on platform
-      left = false;
+      if (right && p.y >= 705 || right && p.x >= platforms[14].x && p.x <= platforms[14].x+10
+          && p.y > platforms[14].y) {
+        p.x -= 20;
+        p.y = 700-p.h-5;      //sometimes player falls through ground 
+        right = false;        //put them back on platform
+        left = false;
+      } else if (left && p.y >= 705 || left && p.x >= platforms[14].x+platforms[15].w-5 
+        && p.x <= platforms[14].x+platforms[14].w && p.y > platforms[14].y) {
+        p.x += 20;
+        p.y = 700-p.h-5;      //sometimes player falls through ground 
+        right = false;        //put them back on platform
+        left = false;
     }
   }
   
@@ -101,9 +118,8 @@ class Player {
    
    void touchPlatformBot() { // when player jumps and hits the bottom of a platform
     ySpeed = 0;
-    botCollide = true;      // he won't go through
-    
-  }
+    botCollide = true;      // he won't go through  
+   }
   
   void touchPlatformLeft() {  // player can't jump through left side of platforms
     x = x-5;
