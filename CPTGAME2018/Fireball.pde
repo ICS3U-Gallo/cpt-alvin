@@ -8,7 +8,7 @@ class Fireball {
     h = startH;
   }
   
-  void display() {
+  void display() {  //fireball appearance
   //  noStroke();
 //    fill(0, 0, 100);
   //  rect(x, y, w, h);

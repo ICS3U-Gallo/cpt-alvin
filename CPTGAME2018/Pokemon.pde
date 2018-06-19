@@ -8,7 +8,7 @@ class Pokemon {
     h = startH;
   }
   
-  void display() {
+  void display() {        //display pokemon card
     rect(x, y, w, h);
     image(pokemoncard, x-10, y, w+20, h);
   }

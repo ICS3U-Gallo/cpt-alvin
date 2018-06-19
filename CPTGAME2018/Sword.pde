@@ -8,15 +8,17 @@ class Sword {
     h = startH;
   }
   
-  void display() {
+  void display() {      //display sword (facing up)
   //  noStroke();
 //    fill(0, 0, 100);
    // rect(x, y, w, h);
     image(sword, x, y, w, h);
   }
  
-  void left() {
-    rect(x, y, w, h);
-    image(pokemoncard, x, y, w, h);
+  void swordRight() {      //display sword (facing right)
+  //  noStroke();
+//    fill(0, 0, 100);
+   // rect(x, y, w, h);
+    image(swordRight, x, y, w, h);
   }
 }

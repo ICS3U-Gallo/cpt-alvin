@@ -8,19 +8,14 @@ class Enemy {
     h = startH;
   }
 
- void weak() {
-    noStroke();
-    fill(0, 128, 143);
-    rect(x, y, w, h);
+ void display() {  //enemy appearance
+  //  noStroke();
+   // fill(0, 128, 143, 100);
+    image(oven, x, y, w, h+5);
+    //rect(x, y, w, h);  
   }
-  
-  void mediocre() {
-    noStroke();
-    fill(154,205,50);
-    rect(x, y, w, h);
-  }
-  
-  void punchleft() {
+
+  void punchleft() {  //different type of enemy
    // rect(x, y, w, h);
     image(punchleft, x-30, y-30, w+30, h+70);
   }

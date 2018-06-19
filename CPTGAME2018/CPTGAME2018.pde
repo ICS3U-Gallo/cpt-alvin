@@ -11,22 +11,23 @@ Fireball[] fireballs;
 Pokemon[] pokemons;
 Portal[] portals;  
 float platformSpeed;
-PImage chicken, pokemoncard, magikarpCard, stunfiskCard, arceusCard, soitsuCard, roastedchicken, sword, swordleft, fireball, portal,
-       punchleft, grass, swordDown;
+PImage chicken, oven, pokemoncard, magikarpCard, stunfiskCard, arceusCard, soitsuCard, roastedchicken, sword, swordleft, fireball, portal,
+       punchleft, grass, space, swordDown, swordRight;
 String screen;
-boolean left, right, up, down, hitEnemy;
-int cardCount, enemySpeed, lives;  
+boolean left, right, up, down;
+int cardCount, enemySpeed, playerSpeed, lives;  
 
 void setup() {
   size(1366, 768);
   smooth();
-  screen = "menu";
+  screen = "menu";          //screen
   p = new Player();
   l = new Level();
   chicken = loadImage("chicken.png");
+  oven = loadImage("oven.png");
   sword = loadImage("sword.png");
   pokemoncard = loadImage("pokemoncard.png"); 
-  magikarpCard = loadImage("magikarp.jpeg");
+  magikarpCard = loadImage("magikarp.jpeg");      //pictures uploaded
   stunfiskCard = loadImage("stunfisk.jpg");
   arceusCard = loadImage("arceuscard.jpeg");
   soitsuCard = loadImage("soitsu.png");
@@ -35,16 +36,19 @@ void setup() {
   portal = loadImage("portal.png");
   punchleft = loadImage("punchleft.png");
   grass = loadImage("grass.png");
+  space = loadImage("space.png");
   swordDown = loadImage("sworddown.png");
+  swordRight = loadImage("swordright.png");
  // swordleft = loadImage("swordleft.png");
   cardCount = 0;
   lives = 3;
   enemySpeed = 5;
+  playerSpeed = 3;
   swordz = new PVector[15];
-  for(int i = 0; i < swordz.length; i++) {
-    float x = random(0, width);
-    float y = random(0, 400);
-    swordz[i] = new PVector(x, y);
+  for(int i = 0; i < swordz.length; i++) {    //setup a PVector for swordz
+    float x = random(100, width);  //swordz (x position) appear between 100 and width of screen
+    float y = random(0, 400);      //swordz (y position) appear between 0 and 400 in the beginning
+    swordz[i] = new PVector(x, y);    //set PVector to each swordz
   }
   platforms = new Platform[37];     //location of platforms
   //------------------------------------------------
@@ -87,12 +91,10 @@ void setup() {
   platforms[34] = new Platform(700, 350, 40, 40);
   platforms[35] = new Platform(500, 300, 40, 40);
   //----------------------------------------------
-  platforms[36] = new Platform(0, 600, width, 50);
+  platforms[36] = new Platform(0, 600, width, 50);     //lvl3
   
-  platformSpeed = 0;
-  if (screen == "lvl1") {    //platform speed in lvl1 is set to 3
-    platformSpeed = 3;
-  }
+  platformSpeed = 3;
+  
   /*for(int i = 0; i < platforms.length; i++) {
     platforms[i].y += platformSpeed;
     platforms[i].x += platformSpeed;
@@ -155,6 +157,8 @@ void draw() {
     menu();
   } if (screen == "instructions") {
     instructions();
+  } if (screen == "pretutorial") {
+    pretutorial();
   } if (screen == "tutorial") {            //change screens 
     tutorial();
   } if (screen == "tutorialPass") {
@@ -191,15 +195,15 @@ void menu() {
   noStroke();
   rect(0, 650, width, 200);
   if (mouseX > 460 && mouseX < 860 && mouseY > 250 && mouseY < 350) {
-    fill(0, 150, 0, 255);
+    fill(0, 150, 0, 255);     // play button
   } else {
-    fill(0, 150, 0, 170);
+    fill(0, 150, 0, 170);     //change opacity when mouse is on button
   }
   rect(460, 250, 400, 100);
   if (mouseX > 460 && mouseX < 860 && mouseY > 400 && mouseY < 500) {
-    fill(0, 150, 0, 255);
+    fill(0, 150, 0, 255);        //instructions button
   } else {
-    fill(0, 150, 0, 170);
+    fill(0, 150, 0, 170);        //change opacity when mouse is on button
   }
   rect(460, 400, 400, 100);
   
@@ -234,12 +238,47 @@ void instructions() {
   }
 }
   
+void pretutorial() {
+  background(106,90,205);
+  image(chicken, 600, 550, 150, 150);
+  textSize(50);
+  fill(255,165,0);
+  text("Hello there, I have been searching for the most", 100, 100); 
+  text("valuable pokemon cards out there in this world.", 100, 200);
+  text("It is my passion to collect pokemon cards, and", 100, 300);
+  text("I will not stop until I collect every single pokemon", 100, 400);
+  text("card created. Will you help me on my adventure?", 100, 500);
+  noStroke();
+
+ if (mouseX > 275 && mouseX < 575 && mouseY > 550 && mouseY < 650) {
+    fill(200, 0, 0, 255);     // yes button
+  } else {
+    fill(200, 0, 0, 170);     //change opacity when mouse is on button
+  }
+  rect(275, 550, 300, 100);
+  if (mouseX > 775 && mouseX < 1075 && mouseY > 550 && mouseY < 650) {
+    fill(200, 0, 0, 255);        //no button
+  } else {
+    fill(200, 0, 0, 170);        //change opacity when mouse is on button
+  }
+  rect(775, 550, 300, 100);
+  
+  fill(135,206,250);
+  textSize(70);
+  text("YES!", 360, 625); 
+  text("NOPE", 835, 625);
+  
+  fill(0, 0, 0);
+  textSize(20);
+  text("(You will do a tutorial if you press yes)", 490, 730);
+  
+}
 
 void tutorial() {
-  background(50, 160, 0);
+  background(176,224,230);
   l.tutorial();
   p.player();
-  p.playerScore();
+  p.playerScore();          
   p.lives();
   p.boundaries();
   p.move();
@@ -248,12 +287,13 @@ void tutorial() {
 }
 
 void tutorialPass() {          //screen after you pass tutorial level
-  background(0, 255, 0);
+  background(255,182,193);
   textSize(50);
-  fill(0, 0, 150);
+  fill(255, 255, 0);
   text("Well Done!", 550, 200);
-  text("You are ready to go on your adventure.", 200, 300);
-  text("Go get those pokemon cards!!!", 300, 400);
+  fill(0, 0, 150);
+  text("With your help, I am ready to go on my adventure", 100, 300);
+  text("Let's get those pokemon cards!!!", 280, 400);
   fill(255,20,147);
   text("Press SPACE to proceed to the next level", 180, 600);
   if (keyPressed) {
@@ -268,24 +308,24 @@ void tutorialPass() {          //screen after you pass tutorial level
 
 void lvl1() {              //lvl 1 screen
   background(135,206,250);
+  l.lvl1();
   p.player();
   p.playerScore();
   p.lives();
   p.boundaries();
   p.move();
-  l.lvl1();
   p.noFall();
   p.noLives();
 }
 
 void lvl2() {
-  background(0, 255, 0);
+  background(176,224,230);
+  l.lvl2();
   p.player();
   p.playerScore();
   p.lives();
   p.boundaries();
   p.move();
-  l.lvl2();
   p.noLives();
 }
 
@@ -297,6 +337,8 @@ void lvl3() {
   p.lives();
   p.noLives();
   p.move();
+  textSize(60);
+  text("USE THE FORCE!", 450, 350);
 }
 
 void gameover() {          //gameover screen
@@ -318,13 +360,16 @@ void gameover() {          //gameover screen
 
 void victory() {
   background(135,206,250);
+  image(chicken, 400, 150, 500, 500);
   textSize(150);
-  fill(255, 0, 0, 127);
-  text("YOU WIN!", 330, 300); 
+  fill(255,140,0);
+  text("I WIN!", 475, 300); 
   textSize(60);
-  text("You collected all the pokemon cards!!!", 150, 400);
+  fill(255, 0, 0, 200);
+  text("I collected all the pokemon cards!!!", 150, 400);
+  text("All by myself! With no help at all!", 200, 500);
   fill(32,178,170);
-  text("You get nothing.", 450, 600);
+  text("You can go away now.", 370, 600);
 }
 
 /*void tree() {      //drawing of tree
@@ -334,10 +379,11 @@ void victory() {
 }*/
 
 void card1() {                //screen when you collect pokemon card1
-  background(0, 255, 0);
+  background(34,139,34);
   textSize(60);
-  fill(255, 0, 0);
+  fill(255, 255, 0);
   text("CARD EARNED!", 200, 150);
+  fill(255, 0, 0);
   text("WOW NICE!!! YOU JUST", 75, 275);
   text("GOT A SUPER ULTRA", 75, 375);
   text("RARE LIMITED EDITION", 75, 475);
@@ -353,15 +399,16 @@ void card1() {                //screen when you collect pokemon card1
   }
 }
 
-void card2() {
-  background(0, 255, 0);
+void card2() {                        //screen when you collect pokemon card2
+  background(105,105,105);
   textSize(60);
-  fill(255, 0, 0);
+  fill(255, 255, 0);
   text("CARD EARNED!", 200, 150);
-  text("WOW NICE!!! YOU JUST", 75, 275);
-  text("GOT A SUPER ULTRA", 75, 375);
-  text("RARE LIMITED EDITION", 75, 475);
-  text("ONE OF A KIND MAGIKARP", 50, 575);
+  fill(255, 0, 0);
+  text("SO COOL!!! WHAT A", 75, 275);
+  text("WONDERFUL POKEMON!", 75, 375);
+  text("One of the most antique", 75, 475);
+  text("pokemon cards in the world.", 10, 575);
   textSize(40);
   fill(0, 0, 255);
   text("Press SPACE to continue", 175, 675);
@@ -373,12 +420,13 @@ void card2() {
   }
 }
 
-void card3() {
+void card3() {                    //screen when you collect pokemon card3
   background(150, 100, 100);
   
   textSize(60);
-  fill(127, 0, 0);
+  fill(255, 255, 0);
   text("CARD EARNED!", 200, 150);
+  fill(127, 0, 0);
   text("Oh, it's just an arceus.", 75, 275);
   text("What a useless card.", 75, 375);
   text("No one would even pay", 75, 475);
@@ -394,7 +442,7 @@ void card3() {
   }
 }
 
-void card4() {
+void card4() {                            //screen when you collect pokemon card1
   background(10, 160, 100);
   
   textSize(60);
@@ -456,6 +504,10 @@ void keyReleased() {
     break; */
 }
 
+//Every collision is centered around the player's topleft corner
+//So p.x > pl.x-p.w would mean the player would collide when the topleft corner of
+//the player is the player's width away from the leftside of the collided item
+//Same thing for the y position.
 boolean topCollide(Player p, Platform pl) {    
   
   if (p.x > pl.x-p.w && p.x < pl.x+pl.w) { // if player touches the top of a platform
@@ -496,7 +548,7 @@ boolean rightCollide(Player p, Platform pl) {
   return false;    //not touching platform return false
 }
 
-boolean intersectEnemy(Player p, Enemy e) {  
+boolean intersectEnemy(Player p, Enemy e) {  //collision detection when player and enemy collide
   
   float distanceX = (p.x + p.w/2) - (e.x + e.w/2);
   
@@ -515,7 +567,7 @@ boolean intersectEnemy(Player p, Enemy e) {
   return false;
 }
 
-boolean intersectPortal(Player p, Portal po) {
+boolean intersectPortal(Player p, Portal po) {  //collision detection when player and portal collide
   float distanceX = (p.x + p.w/2) - (po.x + po.w/2);
   
   float distanceY = (p.y + p.h/2) - (po.y + po.h/2);
@@ -533,7 +585,7 @@ boolean intersectPortal(Player p, Portal po) {
   return false;
 }
 
-boolean intersectFireball(Player p, Fireball f) {
+boolean intersectFireball(Player p, Fireball f) { //collision detection when player and fireball collide
   float distanceX = (p.x + p.w/2) - (f.x + f.w/2);
   
   float distanceY = (p.y + p.h/2) - (f.y + f.h/2);
@@ -551,7 +603,7 @@ boolean intersectFireball(Player p, Fireball f) {
   return false;
 }
 
-boolean intersectSword(Player p, Sword s) {
+boolean intersectSword(Player p, Sword s) { //collision detection when player and sword collide
   float distanceX = (p.x + p.w/2) - (s.x + s.w/2);
   
   float distanceY = (p.y + p.h/2) - (s.y + s.h/2);
@@ -569,7 +621,7 @@ boolean intersectSword(Player p, Sword s) {
   return false;
 }
 
-boolean intersectPokemon(Player p, Pokemon c) {
+boolean intersectPokemon(Player p, Pokemon c) { //collision detection when player and pokemon card collide
   float distanceX = (p.x + p.w/2) - (c.x + c.w/2);
   
   float distanceY = (p.y + p.h/2) - (c.y + c.h/2);
@@ -587,19 +639,26 @@ boolean intersectPokemon(Player p, Pokemon c) {
   return false;
 }
 
-void mouseClicked() {
-  p.x = mouseX;
+void mouseClicked() {  //teleport player anywhere you want
+  p.x = mouseX;        //for testing
   p.y = mouseY;
   p.g = 0;
   p.g = 0.3;
 } 
 
-void mouseReleased() {
-  if (screen == "menu") {
+void mouseReleased() {  //if mouse is on a specific button and released, go to specific screen
+  if (screen == "menu") {    //only in the menu
     if(mouseX > 460 && mouseX < 860 && mouseY > 250 && mouseY < 350) {
-      screen = "tutorial";
+      screen = "pretutorial";
     } if (mouseX > 460 && mouseX < 860 && mouseY > 400 && mouseY < 500) {
       screen = "instructions";    
+    }
+  }
+  if (screen == "pretutorial") { //if mouse is on specific button and released, go to specific screen
+    if (mouseX > 275 && mouseX < 575 && mouseY > 550 && mouseY < 650) {
+      screen = "tutorial";      //only in pretutorial
+    } if (mouseX > 775 && mouseX < 1075 && mouseY > 550 && mouseY < 650) {
+      screen = "menu";
     }
   }
 }

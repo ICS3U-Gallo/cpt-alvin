@@ -19,26 +19,26 @@ class Player {
     leftCollide = false;
   }
   
-  void player() {
+  void player() {        //display player 
     noStroke();
     fill(255, 0, 0);
-  //  rect(x, y, w, h);
+  //  rect(x, y, w, h);  
     image(chicken, x-5, y, w+10, h);
   }
   
   void playerScore() {
-    textSize(20);
+    textSize(20);                  //display cards collected
     text("Pokemon Cards: " + cardCount + "/4", 20, 20);
   }
   
   void lives() {
-    textSize(20);
+    textSize(20);              //display lives
     text("Lives: " + lives, 300, 20);
   }
   
   void noLives() {
-    if (lives == 0) {
-      screen = "gameover";
+    if (lives == 0) {            //when player runs out of lives, change screen
+      screen = "gameover";       //to game over screen
     }
   }
 /*  void shoot() {
@@ -76,17 +76,6 @@ class Player {
     }
   }
   
-  void fly() {
-     if (left) {        //move left
-      xSpeed = -5;
-    } if (right) {     //move right
-      xSpeed = 5;
-    } if (up) {
-      ySpeed -= 5;
-    } if (down) {
-      ySpeed += 5;
-    }
-  }
   
   void boundaries() {     //boundaries for player so he cant move out of screen
     if (x >= width-p.w) {
